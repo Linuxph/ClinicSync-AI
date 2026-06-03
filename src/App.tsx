@@ -123,7 +123,10 @@ function App() {
   const heroPreviewScale = useTransform(scrollYProgress, [0, 0.35], [1, 0.96]);
 
   // Get Google Apps Script URL from environment variables
-  const GOOGLE_SHEET_URL = import.meta.env.VITE_GOOGLE_SHEET_URL; 
+  const GOOGLE_SHEET_URL = import.meta.env.VITE_GOOGLE_SHEET_URL
+    ?.trim()
+    .replace(/^"(.*)"$/, '$1')
+    .replace(/^'(.*)'$/, '$1');
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -156,10 +159,10 @@ function App() {
       const timestamp = new Date().toISOString();
       const response = await fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
+        mode: 'no-cors',
         body: JSON.stringify({
           email: emailValue,
           timestamp: timestamp,
