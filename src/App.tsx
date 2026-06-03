@@ -147,9 +147,14 @@ function App() {
   }, []);
 
   const sendToGoogleSheet = async (emailValue: string) => {
+    if (!GOOGLE_SHEET_URL) {
+      console.error('Missing VITE_GOOGLE_SHEET_URL environment variable');
+      return false;
+    }
+
     try {
-      const timestamp = new Date().toLocaleString();
-      await fetch(GOOGLE_SHEET_URL, {
+      const timestamp = new Date().toISOString();
+      const response = await fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: {
@@ -160,6 +165,13 @@ function App() {
           timestamp: timestamp,
         }),
       });
+
+      if (!response.ok) {
+        const text = await response.text().catch(() => 'Unable to read response body');
+        console.error('Google Sheet request failed:', response.status, response.statusText, text);
+        return false;
+      }
+
       return true;
     } catch (error) {
       console.error('Error saving to sheet:', error);
