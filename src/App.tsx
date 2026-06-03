@@ -450,7 +450,7 @@ function App() {
             AI-powered SOAP notes and ADA billing code extraction.
           </motion.p>
           <motion.form variants={fadeInUp} onSubmit={handleSubmitBottom} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            {submittedBottom ? (
+            {submitted ? (
               <div className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-[#00B4FF]/10 border border-[#00B4FF]/30 text-[#00B4FF] font-medium text-sm">
                 <CheckCircle className="w-4 h-4" />
                 You're on the list!
